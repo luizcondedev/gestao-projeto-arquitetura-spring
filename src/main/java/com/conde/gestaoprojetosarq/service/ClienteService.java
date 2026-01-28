@@ -13,6 +13,7 @@ public class ClienteService {
 
     public Cliente salvarCliente(Cliente cliente) {
             emailExiste(cliente.getEmail());
+            cpfExiste(cliente.getCpf());
             return clienteRepository.save(cliente);
     }
 
@@ -22,12 +23,27 @@ public class ClienteService {
             if (existe) {
                 throw new ConflictException("Email já existente: " + email);
             }
-        } catch (RuntimeException e) {
+        } catch (ConflictException e) {
             throw new ConflictException("Email já existente" + e.getCause());
+        }
+    }
+
+    public void cpfExiste(String cpf){
+        try{
+            boolean existe = verificaCpfExistente(cpf);
+            if(existe){
+                throw new ConflictException("Cpf já existente: " + cpf);
+            }
+        }catch (ConflictException e){
+            throw new ConflictException("Cpf já existente" + e.getCause());
         }
     }
 
     public boolean verificaEmailExistente(String email) {
         return clienteRepository.existsByEmail(email);
+    }
+
+    public boolean verificaCpfExistente(String cpf){
+        return clienteRepository.existsByCpf(cpf);
     }
 }

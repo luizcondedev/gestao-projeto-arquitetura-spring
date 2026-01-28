@@ -9,4 +9,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     //Metodo para verificar se ja existe um cliente com esse email
     public boolean existsByEmail(String email);
+
+    public boolean existsByCpf(String cpf);
 }
