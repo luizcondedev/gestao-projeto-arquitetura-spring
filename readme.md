@@ -31,9 +31,10 @@ O projeto segue o padrão Maven/Spring:
 ## 📝 Roadmap de Desenvolvimento
 - [x] Configuração inicial do ambiente Spring com Maven.
 - [x] Mapeamento das Entidades (Models) com JPA.
-- [ ] Implementação dos Repositories (CRUD básico).
-- [ ] Criação dos Services para regras de negócio.
-- [ ] Exposição de endpoints via Controllers.
+- [x] Implementação dos Repositories (CRUD básico).
+- [x] Criação dos Services para regras de negócio.
+- [x] Exposição de endpoints via Controllers.
+- [ ] Melhorias na lógica de negócios
 - [ ] Documentação da API com Swagger/OpenAPI.
 
 ---
