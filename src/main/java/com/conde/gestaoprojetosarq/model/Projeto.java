@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +24,8 @@ public class Projeto {
     private String enderecoProjeto;
     @Column(name = "fase_projeto", length = 50)
     private String faseProjeto;
+    @Column(name = "orcamento_projeto", precision = 19, scale = 2)
+    private BigDecimal orcamento;
 
     @ManyToOne
     @JoinColumn(name = "arquiteto_id")
