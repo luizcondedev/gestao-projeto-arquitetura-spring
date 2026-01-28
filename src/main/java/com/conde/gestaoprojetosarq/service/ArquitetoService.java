@@ -31,7 +31,7 @@ public class ArquitetoService {
     }
     public void existeCpf(String cpf){
         try {
-            boolean existe = verificaEmailExistente(cpf);
+            boolean existe = verificaCpfExistente(cpf);
             if(existe){
                 throw new ConflictException("CPF já cadastrado");
             }
@@ -42,7 +42,7 @@ public class ArquitetoService {
 
     public void existeCau(String cau){
         try {
-            boolean existe = verificaEmailExistente(cau);
+            boolean existe = verificaCauExistente(cau);
             if(existe){
                 throw new ConflictException("CAU já associado a outro arquiteto");
             }

@@ -23,6 +23,9 @@ public class ProjetoService {
     private ProjetoRepository projetoRepository;
 
     public Projeto criarProjeto(Projeto projeto){
+        System.out.println("Projeto recebido: " + projeto);
+        System.out.println("Arquiteto dentro do projeto: " + projeto.getArquiteto());
+
         if(projeto.getArquiteto() != null && projeto.getArquiteto().getId() != null){
             Arquiteto arquiteto = arquitetoRepository.findById(projeto.getArquiteto().getId())
                     .orElseThrow(() -> new RuntimeException("Arquiteto não encontrado pelo ID"));
