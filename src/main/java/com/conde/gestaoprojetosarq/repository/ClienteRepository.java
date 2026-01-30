@@ -3,6 +3,8 @@ package com.conde.gestaoprojetosarq.repository;
 import com.conde.gestaoprojetosarq.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     //Metodo para buscar o cliente pelo email
      Cliente findByEmail(String email);
@@ -11,5 +13,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
      boolean existsByEmail(String email);
 
      boolean existsByCpf(String cpf);
+
+     Optional<Cliente> findByCpf(String cpf);
 
 }

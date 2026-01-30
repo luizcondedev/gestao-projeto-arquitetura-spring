@@ -1,13 +1,15 @@
 package com.conde.gestaoprojetosarq.controller;
 
 import com.conde.gestaoprojetosarq.model.Arquiteto;
+import com.conde.gestaoprojetosarq.model.Projeto;
+import com.conde.gestaoprojetosarq.model.dto.ArquitetoDTO;
+import com.conde.gestaoprojetosarq.model.dto.ProjetoDTO;
 import com.conde.gestaoprojetosarq.service.ArquitetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/arquiteto")
@@ -18,5 +20,15 @@ public class ArquitetoController {
     @PostMapping
     public ResponseEntity<Arquiteto> salvaCliente(@RequestBody Arquiteto arquiteto){
        return ResponseEntity.status(201).body(arquitetoService.salvaArquiteto(arquiteto));
+    }
+
+    @GetMapping("/busca/{cpf}")
+    public ResponseEntity<ArquitetoDTO> buscarPorCpf(@PathVariable String cpf){
+        return ResponseEntity.ok(arquitetoService.buscarArquitetoPorCpf(cpf));
+    }
+
+    @GetMapping("/busca-projetos/{cpf}")
+    public ResponseEntity<List<ProjetoDTO>> buscarProjetosPorCpf(@PathVariable String cpf){
+        return ResponseEntity.ok(arquitetoService.buscarProjetosPorCpfDoArquiteto(cpf));
     }
 }
