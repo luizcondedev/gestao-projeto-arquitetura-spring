@@ -1,5 +1,6 @@
 package com.conde.gestaoprojetosarq.service;
 
+import com.conde.gestaoprojetosarq.infrastructure.exceptions.ConflictException;
 import com.conde.gestaoprojetosarq.model.Arquiteto;
 import com.conde.gestaoprojetosarq.model.Cliente;
 import com.conde.gestaoprojetosarq.model.Projeto;
@@ -22,30 +23,54 @@ public class ProjetoService {
     @Autowired
     private ProjetoRepository projetoRepository;
 
-    public Projeto criarProjeto(Projeto projeto){
+    public Projeto criarProjeto(Projeto projeto) {
         System.out.println("Projeto recebido: " + projeto);
         System.out.println("Arquiteto dentro do projeto: " + projeto.getArquiteto());
 
-        if(projeto.getArquiteto() != null && projeto.getArquiteto().getId() != null){
+        if (projeto.getArquiteto() != null && projeto.getArquiteto().getId() != null) {
             Arquiteto arquiteto = arquitetoRepository.findById(projeto.getArquiteto().getId())
                     .orElseThrow(() -> new RuntimeException("Arquiteto não encontrado pelo ID"));
             projeto.setArquiteto(arquiteto);
-        }else{
+        } else {
             throw new RuntimeException("É obrigatório informar o ID do Arquiteto");
         }
 
-        if(projeto.getCliente() != null && projeto.getCliente().getId() != null){
+        if (projeto.getCliente() != null && projeto.getCliente().getId() != null) {
             Cliente cliente = clienteRepository.findById(projeto.getCliente().getId())
                     .orElseThrow(() -> new RuntimeException("Cliente não encontrado pelo ID"));
             projeto.setCliente(cliente);
-        }else{
+        } else {
             throw new RuntimeException("É obrigatório informar o ID do Cliente");
         }
+
+        validarLimiteArquiteto(projeto.getArquiteto());
+        validarLimiteCliente(projeto.getCliente());
 
         return projetoRepository.save(projeto);
     }
 
-    public List<Projeto> listarTodos(){
+    public void validarLimiteArquiteto(Arquiteto arquiteto) {
+        if (contaProjetosArquitetos(arquiteto) >= 2) {
+            throw new ConflictException("Arquiteto já atingiu o limite de 2 projetos");
+        }
+    }
+
+    public void validarLimiteCliente(Cliente cliente) {
+        if (contaProjetosCliente(cliente) >= 1) {
+            throw new ConflictException("Cliente já atingiu o limite de 1 projeto");
+        }
+        ;
+    }
+
+    public long contaProjetosArquitetos(Arquiteto arquiteto) {
+        return projetoRepository.countByArquiteto(arquiteto);
+    }
+
+    public long contaProjetosCliente(Cliente cliente) {
+        return projetoRepository.countByCliente(cliente);
+    }
+
+    public List<Projeto> listarTodos() {
         return projetoRepository.findAll();
     }
 

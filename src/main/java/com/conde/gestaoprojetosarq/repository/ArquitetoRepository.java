@@ -7,4 +7,5 @@ public interface ArquitetoRepository extends JpaRepository<Arquiteto, Long> {
     public boolean existsByCpf(String cpf);
     public boolean existsByEmail(String email);
     public boolean existsByCau(String cau);
+
 }
