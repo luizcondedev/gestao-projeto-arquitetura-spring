@@ -59,7 +59,6 @@ public class ProjetoService {
         if (contaProjetosCliente(cliente) >= 1) {
             throw new ConflictException("Cliente já atingiu o limite de 1 projeto");
         }
-        ;
     }
 
     public long contaProjetosArquitetos(Arquiteto arquiteto) {

@@ -1,5 +1,6 @@
 package com.conde.gestaoprojetosarq.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,10 +32,12 @@ public class Projeto {
     @ManyToOne
     @JoinColumn(name = "arquiteto_id")
     @JsonIgnoreProperties("projetos")
+    @JsonIgnore
     private Arquiteto arquiteto;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("projetos")
+    @JsonIgnore
     private Cliente cliente;
 }
