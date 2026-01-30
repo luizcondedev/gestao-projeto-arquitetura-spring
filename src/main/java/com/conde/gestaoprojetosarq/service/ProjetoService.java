@@ -4,6 +4,7 @@ import com.conde.gestaoprojetosarq.infrastructure.exceptions.ConflictException;
 import com.conde.gestaoprojetosarq.model.Arquiteto;
 import com.conde.gestaoprojetosarq.model.Cliente;
 import com.conde.gestaoprojetosarq.model.Projeto;
+import com.conde.gestaoprojetosarq.model.dto.ProjetoDTO;
 import com.conde.gestaoprojetosarq.repository.ArquitetoRepository;
 import com.conde.gestaoprojetosarq.repository.ClienteRepository;
 import com.conde.gestaoprojetosarq.repository.ProjetoRepository;
@@ -69,8 +70,19 @@ public class ProjetoService {
         return projetoRepository.countByCliente(cliente);
     }
 
-    public List<Projeto> listarTodos() {
-        return projetoRepository.findAll();
+    public List<ProjetoDTO> listarTodos() {
+        List<Projeto> projetos = projetoRepository.findAll();
+        return projetos.stream()
+                .map(projeto -> {
+                    ProjetoDTO dto = new ProjetoDTO();
+                    dto.setNomeProjeto(projeto.getNomeProjeto());
+                    dto.setEnderecoProjeto(projeto.getEnderecoProjeto());
+                    dto.setFaseProjeto(projeto.getFaseProjeto());
+                    dto.setOrcamento(projeto.getOrcamento());
+                    dto.setNomeArquiteto(projeto.getArquiteto().getNome());
+                    dto.setNomeCliente(projeto.getCliente().getNome());
+                    return dto;
+                }).toList();
     }
 
 }

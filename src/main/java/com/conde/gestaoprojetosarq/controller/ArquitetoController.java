@@ -22,12 +22,17 @@ public class ArquitetoController {
        return ResponseEntity.status(201).body(arquitetoService.salvaArquiteto(arquiteto));
     }
 
-    @GetMapping("/busca/{cpf}")
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ArquitetoDTO>> listarTodos(){
+        return ResponseEntity.ok(arquitetoService.listarTodos());
+    }
+
+    @GetMapping("/buscar/{cpf}")
     public ResponseEntity<ArquitetoDTO> buscarPorCpf(@PathVariable String cpf){
         return ResponseEntity.ok(arquitetoService.buscarArquitetoPorCpf(cpf));
     }
 
-    @GetMapping("/busca-projetos/{cpf}")
+    @GetMapping("/buscar/projetos/{cpf}")
     public ResponseEntity<List<ProjetoDTO>> buscarProjetosPorCpf(@PathVariable String cpf){
         return ResponseEntity.ok(arquitetoService.buscarProjetosPorCpfDoArquiteto(cpf));
     }

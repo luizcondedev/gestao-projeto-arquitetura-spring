@@ -77,6 +77,7 @@ public class ArquitetoService {
         if (projetos.isEmpty()) {
             throw new ConflictException("Nenhum Projeto encontrado associado a esse arquiteto");
         }
+        //Utlização de Stream para transformar a Lista Projetos em uma Lista de projetoDTO
         return projetos.stream()
                 .map(projeto -> {
                     ProjetoDTO dto = new ProjetoDTO();
@@ -86,6 +87,20 @@ public class ArquitetoService {
                     dto.setOrcamento(projeto.getOrcamento());
                     dto.setNomeArquiteto(projeto.getArquiteto().getNome());
                     dto.setNomeCliente(projeto.getCliente().getNome());
+                    return dto;
+                }).toList();
+    }
+
+    public List<ArquitetoDTO> listarTodos(){
+        List<Arquiteto> arquitetos = arquitetoRepository.findAll();
+
+        return arquitetos.stream()
+                .map(arquiteto -> {
+                    ArquitetoDTO dto = new ArquitetoDTO();
+                    dto.setNome(arquiteto.getNome());
+                    dto.setEmail(arquiteto.getEmail());
+                    dto.setCpf(arquiteto.getCpf());
+                    dto.setCau(arquiteto.getCau());
                     return dto;
                 }).toList();
     }

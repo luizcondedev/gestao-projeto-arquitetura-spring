@@ -11,4 +11,5 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
      long countByArquiteto(Arquiteto arquiteto);
      long countByCliente(Cliente cliente);
      List<Projeto> findByArquitetoCpf(String cpf);
+     List<Projeto> findByClienteCpf(String cpf);
 }

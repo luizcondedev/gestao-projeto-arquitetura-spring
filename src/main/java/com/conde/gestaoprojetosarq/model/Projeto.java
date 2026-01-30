@@ -32,12 +32,10 @@ public class Projeto {
     @ManyToOne
     @JoinColumn(name = "arquiteto_id")
     @JsonIgnoreProperties("projetos")
-    @JsonIgnore
     private Arquiteto arquiteto;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("projetos")
-    @JsonIgnore
     private Cliente cliente;
 }
