@@ -6,6 +6,6 @@ import com.conde.gestaoprojetosarq.model.Projeto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
-    public long countByArquiteto(Arquiteto arquiteto);
-    public long countByCliente(Cliente cliente);
+     long countByArquiteto(Arquiteto arquiteto);
+     long countByCliente(Cliente cliente);
 }
