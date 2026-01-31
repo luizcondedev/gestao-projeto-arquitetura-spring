@@ -35,4 +35,10 @@ public class ClienteController {
     public ResponseEntity<List<ProjetoDTO>> buscarProjetosPorCpf(@PathVariable String cpf){
         return ResponseEntity.ok(clienteService.buscarProjetosPorCpfDoCliente(cpf));
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ClienteDTO> atualizarCliente(@PathVariable Long id, @RequestBody ClienteDTO dto){
+        ClienteDTO clienteAtualizado = clienteService.atualizarCliente(id, dto);
+        return ResponseEntity.ok(clienteAtualizado);
+    }
 }
