@@ -28,35 +28,20 @@ public class ArquitetoService {
     }
 
     public void existeEmail(String email) {
-        try {
-            boolean existe = verificaEmailExistente(email);
-            if (existe) {
-                throw new ConflictException("Email já cadastrado");
-            }
-        } catch (ConflictException e) {
-            throw new ConflictException("Email já cadastrado" + e.getCause());
+        if(verificaEmailExistente(email)){
+            throw new ConflictException("Email já cadastrado: " + email);
         }
     }
 
     public void existeCpf(String cpf) {
-        try {
-            boolean existe = verificaCpfExistente(cpf);
-            if (existe) {
-                throw new ConflictException("CPF já cadastrado");
-            }
-        } catch (ConflictException e) {
-            throw new ConflictException("CPF já cadastrado" + e.getCause());
+        if(verificaCpfExistente(cpf)){
+            throw new ConflictException("Cpf já cadastrado: " + cpf);
         }
     }
 
     public void existeCau(String cau) {
-        try {
-            boolean existe = verificaCauExistente(cau);
-            if (existe) {
-                throw new ConflictException("CAU já associado a outro arquiteto");
-            }
-        } catch (ConflictException e) {
-            throw new ConflictException("CAU já associado a outro arquiteto" + e.getCause());
+        if(verificaCauExistente(cau)){
+            throw new ConflictException("Cau já associado: " + cau);
         }
     }
 
@@ -109,12 +94,30 @@ public class ArquitetoService {
         Arquiteto arquitetoExistente = arquitetoRepository.findById(id)
                 .orElseThrow(() -> new ConflictException("Arquiteto não encontrado"));
 
-        if(dto.getNome() != null){arquitetoExistente.setNome(dto.getNome());}
+        if(dto.getNome() != null){
+            arquitetoExistente.setNome(dto.getNome());
+        }
 
-        arquitetoExistente.setNome(dto.getNome());
-        arquitetoExistente.setEmail(dto.getEmail());
-        arquitetoExistente.setCau(dto.getCau());
-        arquitetoExistente.setCpf(dto.getCpf());
+        if(dto.getEmail() != null && !dto.getEmail().equals(arquitetoExistente.getEmail())){
+            if (verificaEmailExistente(dto.getEmail())){
+                throw new ConflictException("Email já cadastrado em outro arquiteto");
+            }
+            arquitetoExistente.setEmail(dto.getEmail());
+        }
+
+        if(dto.getCau() != null && !dto.getCau().equals(arquitetoExistente.getCau())){
+            if(verificaCauExistente(dto.getCau())){
+                throw new ConflictException("CAU já cadastrado em outro arquiteto");
+            }
+
+            arquitetoExistente.setCau(dto.getCau());
+        }
+
+        if(dto.getCpf() != null && !dto.getCpf().equals(arquitetoExistente.getCpf())){
+            if(verificaCpfExistente(dto.getCpf())){
+                throw new ConflictException("CPF já cadastrado em outro arquiteto");
+            }
+        }
 
         arquitetoRepository.save(arquitetoExistente);
         return converterParaDto(arquitetoExistente);
@@ -125,11 +128,11 @@ public class ArquitetoService {
     }
 
     public boolean verificaCpfExistente(String cpf) {
-        return arquitetoRepository.existsByEmail(cpf);
+        return arquitetoRepository.existsByCpf(cpf);
     }
 
     public boolean verificaCauExistente(String cau) {
-        return arquitetoRepository.existsByEmail(cau);
+        return arquitetoRepository.existsByCau(cau);
     }
 
     private ArquitetoDTO converterParaDto(Arquiteto arquiteto){
