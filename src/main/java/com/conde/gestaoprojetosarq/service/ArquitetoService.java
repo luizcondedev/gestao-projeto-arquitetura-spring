@@ -105,6 +105,21 @@ public class ArquitetoService {
                 }).toList();
     }
 
+    public ArquitetoDTO atualizarArquiteto(Long id, ArquitetoDTO dto){
+        Arquiteto arquitetoExistente = arquitetoRepository.findById(id)
+                .orElseThrow(() -> new ConflictException("Arquiteto não encontrado"));
+
+        if(dto.getNome() != null){arquitetoExistente.setNome(dto.getNome());}
+
+        arquitetoExistente.setNome(dto.getNome());
+        arquitetoExistente.setEmail(dto.getEmail());
+        arquitetoExistente.setCau(dto.getCau());
+        arquitetoExistente.setCpf(dto.getCpf());
+
+        arquitetoRepository.save(arquitetoExistente);
+        return converterParaDto(arquitetoExistente);
+    }
+
     public boolean verificaEmailExistente(String email) {
         return arquitetoRepository.existsByEmail(email);
     }
@@ -115,5 +130,14 @@ public class ArquitetoService {
 
     public boolean verificaCauExistente(String cau) {
         return arquitetoRepository.existsByEmail(cau);
+    }
+
+    private ArquitetoDTO converterParaDto(Arquiteto arquiteto){
+        ArquitetoDTO dto = new ArquitetoDTO();
+        dto.setNome(arquiteto.getNome());
+        dto.setEmail(arquiteto.getEmail());
+        dto.setCau(arquiteto.getCau());
+        dto.setCpf(arquiteto.getCpf());
+        return dto;
     }
 }
