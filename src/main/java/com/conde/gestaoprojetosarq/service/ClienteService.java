@@ -28,25 +28,15 @@ public class ClienteService {
     }
 
     public void emailExiste(String email) {
-        try {
-            boolean existe = verificaEmailExistente(email);
-            if (existe) {
-                throw new ConflictException("Email já existente: " + email);
-            }
-        } catch (ConflictException e) {
-            throw new ConflictException("Email já existente" + e.getCause());
+        if(verificaEmailExistente(email)){
+            throw new ConflictException("Email já existente: " + email);
         }
     }
 
     public void cpfExiste(String cpf) {
-        try {
-            boolean existe = verificaCpfExistente(cpf);
-            if (existe) {
-                throw new ConflictException("Cpf já existente: " + cpf);
-            }
-        } catch (ConflictException e) {
-            throw new ConflictException("Cpf já existente" + e.getCause());
-        }
+       if(verificaCpfExistente(cpf)){
+           throw new ConflictException("CPF já existente: " + cpf);
+       }
     }
 
     public ClienteDTO buscarClientePorCpf(String cpf) {
@@ -102,10 +92,25 @@ public class ClienteService {
             clienteExistente.setNome(dto.getNome());
         }
 
-        clienteExistente.setNome(dto.getNome());
-        clienteExistente.setEmail(dto.getEmail());
-        clienteExistente.setCpf(dto.getCpf());
-        clienteExistente.setTelefoneContato(dto.getTelefoneContato());
+        if(dto.getEmail() != null && !dto.getEmail().equals(clienteExistente.getEmail())){
+            if(verificaEmailExistente(dto.getEmail())){
+                throw new ConflictException("Email já cadastrado em outro cliente: " + dto.getEmail());
+            }
+
+            clienteExistente.setEmail(dto.getEmail());
+        }
+
+        if(dto.getCpf() != null && !dto.getCpf().equals(clienteExistente.getCpf())){
+            if(verificaCpfExistente(dto.getCpf())){
+                throw new ConflictException("CPF já cadastrado em outro cliente: " + dto.getCpf());
+            }
+
+            clienteExistente.setCpf(dto.getCpf());
+        }
+
+        if(dto.getTelefoneContato() != null){
+            clienteExistente.setTelefoneContato(dto.getTelefoneContato());
+        }
 
         Cliente clienteAtualizado = clienteRepository.save(clienteExistente);
 
