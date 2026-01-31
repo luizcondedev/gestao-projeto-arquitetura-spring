@@ -100,14 +100,14 @@ public class ArquitetoService {
 
         if(dto.getEmail() != null && !dto.getEmail().equals(arquitetoExistente.getEmail())){
             if (verificaEmailExistente(dto.getEmail())){
-                throw new ConflictException("Email já cadastrado em outro arquiteto");
+                throw new ConflictException("Email já cadastrado em outro arquiteto: " + dto.getEmail());
             }
             arquitetoExistente.setEmail(dto.getEmail());
         }
 
         if(dto.getCau() != null && !dto.getCau().equals(arquitetoExistente.getCau())){
             if(verificaCauExistente(dto.getCau())){
-                throw new ConflictException("CAU já cadastrado em outro arquiteto");
+                throw new ConflictException("CAU já cadastrado em outro arquiteto: " + dto.getCau());
             }
 
             arquitetoExistente.setCau(dto.getCau());
@@ -115,7 +115,7 @@ public class ArquitetoService {
 
         if(dto.getCpf() != null && !dto.getCpf().equals(arquitetoExistente.getCpf())){
             if(verificaCpfExistente(dto.getCpf())){
-                throw new ConflictException("CPF já cadastrado em outro arquiteto");
+                throw new ConflictException("CPF já cadastrado em outro arquiteto: " + dto.getCpf());
             }
         }
 
