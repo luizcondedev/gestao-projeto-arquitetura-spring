@@ -36,4 +36,10 @@ public class ArquitetoController {
     public ResponseEntity<List<ProjetoDTO>> buscarProjetosPorCpf(@PathVariable String cpf){
         return ResponseEntity.ok(arquitetoService.buscarProjetosPorCpfDoArquiteto(cpf));
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ArquitetoDTO> atualizarArquiteto(@PathVariable Long id, @RequestBody ArquitetoDTO dto){
+        ArquitetoDTO arquitetoAtualizado = arquitetoService.atualizarArquiteto(id, dto);
+        return ResponseEntity.ok(arquitetoAtualizado);
+    }
 }
