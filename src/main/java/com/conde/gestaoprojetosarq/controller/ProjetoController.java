@@ -34,4 +34,12 @@ public class ProjetoController {
         ProjetoDTO projetoAtualizado = projetoService.atualizarProjeto(id, dto);
         return ResponseEntity.ok(projetoAtualizado);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletarProjeto (@PathVariable Long id){
+        projetoService.deletarProjeto(id);
+        String mensagem = "Projeto deletado com sucesso!!";
+
+        return ResponseEntity.ok(mensagem);
+    }
 }

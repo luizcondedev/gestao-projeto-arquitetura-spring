@@ -86,6 +86,13 @@ public class ProjetoService {
         return converterParaDto(projetoAtualizado);
     }
 
+    public void deletarProjeto(Long id){
+        Projeto projeto = projetoRepository.findById(id)
+                .orElseThrow(() -> new ConflictException("Projeto não encontrado"));
+
+        projetoRepository.delete(projeto);
+    }
+
     public void validarLimiteArquiteto(Arquiteto arquiteto) {
         if (contaProjetosArquitetos(arquiteto) >= 2) {
             throw new ConflictException("Arquiteto já atingiu o limite de 2 projetos");
