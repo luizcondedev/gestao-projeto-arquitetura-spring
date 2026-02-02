@@ -5,6 +5,7 @@ import com.conde.gestaoprojetosarq.model.Arquiteto;
 import com.conde.gestaoprojetosarq.model.Cliente;
 import com.conde.gestaoprojetosarq.model.Projeto;
 import com.conde.gestaoprojetosarq.model.dto.ProjetoDTO;
+import com.conde.gestaoprojetosarq.model.dto.ProjetoUpdateDTO;
 import com.conde.gestaoprojetosarq.repository.ArquitetoRepository;
 import com.conde.gestaoprojetosarq.repository.ClienteRepository;
 import com.conde.gestaoprojetosarq.repository.ProjetoRepository;
@@ -50,6 +51,41 @@ public class ProjetoService {
         return projetoRepository.save(projeto);
     }
 
+    public ProjetoDTO atualizarProjeto(Long id, ProjetoUpdateDTO dto) {
+        Projeto projetoExistente = projetoRepository.findById(id)
+                .orElseThrow(() -> new ConflictException("Projeto não encontrado"));
+
+        if (dto.getNomeProjeto() != null) {
+            projetoExistente.setNomeProjeto(dto.getNomeProjeto());
+        }
+
+        if (dto.getEnderecoProjeto() != null) {
+            projetoExistente.setEnderecoProjeto(dto.getEnderecoProjeto());
+        }
+
+        if (dto.getFaseProjeto() != null) {
+            projetoExistente.setFaseProjeto(dto.getFaseProjeto());
+        }
+
+        if (dto.getOrcamento() != null) {
+            projetoExistente.setOrcamento(dto.getOrcamento());
+        }
+
+        if (dto.getArquitetoId() != null) {
+            if (!dto.getArquitetoId().equals(projetoExistente.getArquiteto().getId())) {
+                Arquiteto novoArquiteto = arquitetoRepository.findById(dto.getArquitetoId())
+                        .orElseThrow(() -> new ConflictException("Arquiteto não encontrado"));
+
+                validarLimiteArquiteto(novoArquiteto);
+                projetoExistente.setArquiteto(novoArquiteto);
+            }
+        }
+
+        Projeto projetoAtualizado = projetoRepository.save(projetoExistente);
+
+        return converterParaDto(projetoAtualizado);
+    }
+
     public void validarLimiteArquiteto(Arquiteto arquiteto) {
         if (contaProjetosArquitetos(arquiteto) >= 2) {
             throw new ConflictException("Arquiteto já atingiu o limite de 2 projetos");
@@ -83,6 +119,17 @@ public class ProjetoService {
                     dto.setNomeCliente(projeto.getCliente().getNome());
                     return dto;
                 }).toList();
+    }
+
+    private ProjetoDTO converterParaDto(Projeto projeto) {
+        ProjetoDTO dto = new ProjetoDTO();
+        dto.setNomeProjeto(projeto.getNomeProjeto());
+        dto.setEnderecoProjeto(projeto.getEnderecoProjeto());
+        dto.setFaseProjeto(projeto.getFaseProjeto());
+        dto.setOrcamento(projeto.getOrcamento());
+        dto.setNomeArquiteto(projeto.getArquiteto().getNome());
+        dto.setNomeCliente(projeto.getCliente().getNome());
+        return dto;
     }
 
 }
