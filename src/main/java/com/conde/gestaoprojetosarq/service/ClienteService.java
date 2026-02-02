@@ -118,6 +118,23 @@ public class ClienteService {
 
     }
 
+    public void deletarCliente(Long id){
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ConflictException("Cliente não encontrado"));
+
+        List<Projeto> projetos = projetoRepository.findByClienteCpf(cliente.getCpf());
+
+        if(!projetos.isEmpty()){
+            System.out.println("Deletando " + projetos.size() + " projeto(s) do cliente "
+                                + cliente.getProjetos());
+
+            projetos.forEach(p -> projetoRepository.delete(p));
+        }
+
+        System.out.println("Cliente " + cliente.getNome() + " deletado com sucesso!");
+        clienteRepository.delete(cliente);
+    }
+
     public boolean verificaEmailExistente(String email) {
         return clienteRepository.existsByEmail(email);
     }

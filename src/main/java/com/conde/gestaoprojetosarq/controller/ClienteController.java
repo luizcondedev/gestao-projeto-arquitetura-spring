@@ -17,28 +17,34 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente> salvaCliente(@RequestBody Cliente cliente){
+    public ResponseEntity<Cliente> salvaCliente(@RequestBody Cliente cliente) {
         return ResponseEntity.status(201).body(clienteService.salvarCliente(cliente));
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<ClienteDTO>> listarTodos(){
+    public ResponseEntity<List<ClienteDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
     @GetMapping("/buscar/{cpf}")
-    public ResponseEntity<ClienteDTO> buscarClientesCpf(@PathVariable String cpf){
+    public ResponseEntity<ClienteDTO> buscarClientesCpf(@PathVariable String cpf) {
         return ResponseEntity.ok(clienteService.buscarClientePorCpf(cpf));
     }
 
     @GetMapping("/buscar/projetos/{cpf}")
-    public ResponseEntity<List<ProjetoDTO>> buscarProjetosPorCpf(@PathVariable String cpf){
+    public ResponseEntity<List<ProjetoDTO>> buscarProjetosPorCpf(@PathVariable String cpf) {
         return ResponseEntity.ok(clienteService.buscarProjetosPorCpfDoCliente(cpf));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ClienteDTO> atualizarCliente(@PathVariable Long id, @RequestBody ClienteDTO dto){
+    public ResponseEntity<ClienteDTO> atualizarCliente(@PathVariable Long id, @RequestBody ClienteDTO dto) {
         ClienteDTO clienteAtualizado = clienteService.atualizarCliente(id, dto);
         return ResponseEntity.ok(clienteAtualizado);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletarCliente(@PathVariable Long id) {
+        clienteService.deletarCliente(id);
+        return ResponseEntity.noContent().build();
     }
 }
