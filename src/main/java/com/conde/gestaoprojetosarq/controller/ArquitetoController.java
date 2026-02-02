@@ -37,13 +37,13 @@ public class ArquitetoController {
         return ResponseEntity.ok(arquitetoService.buscarProjetosPorCpfDoArquiteto(cpf));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ArquitetoDTO> atualizarArquiteto(@PathVariable Long id, @RequestBody ArquitetoDTO dto){
         ArquitetoDTO arquitetoAtualizado = arquitetoService.atualizarArquiteto(id, dto);
         return ResponseEntity.ok(arquitetoAtualizado);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarArquiteto(@PathVariable Long id){
         arquitetoService.deletarArquiteto(id);
         String mensagem = "Arquiteto deletado com sucesso";

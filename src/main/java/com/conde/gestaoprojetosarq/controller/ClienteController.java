@@ -36,13 +36,13 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.buscarProjetosPorCpfDoCliente(cpf));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ClienteDTO> atualizarCliente(@PathVariable Long id, @RequestBody ClienteDTO dto) {
         ClienteDTO clienteAtualizado = clienteService.atualizarCliente(id, dto);
         return ResponseEntity.ok(clienteAtualizado);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarCliente(@PathVariable Long id) {
         int projetosDeletados = clienteService.deletarCliente(id);
 

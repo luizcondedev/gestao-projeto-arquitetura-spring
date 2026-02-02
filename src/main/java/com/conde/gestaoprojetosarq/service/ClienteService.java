@@ -127,7 +127,7 @@ public class ClienteService {
 
         if(!projetos.isEmpty()){
             System.out.println("Deletando " + projetos.size() + " projeto(s) do cliente "
-                                + cliente.getProjetos());
+                                + cliente.getNome());
 
             projetos.forEach(p -> projetoRepository.delete(p));
         }

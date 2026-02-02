@@ -133,7 +133,7 @@ public class ArquitetoService {
             throw new ConflictException("O arquiteto tem " + projetos.size()+ " projetos associados!");
         }
 
-        System.out.println();
+
         arquitetoRepository.delete(arquiteto);
     }
 
