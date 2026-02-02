@@ -28,6 +28,6 @@ public class Arquiteto {
     @Column(name = "cau", length = 20)
     private String cau;
 
-    @OneToMany(mappedBy = "arquiteto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "arquiteto")
     List<Projeto> projetos;
 }

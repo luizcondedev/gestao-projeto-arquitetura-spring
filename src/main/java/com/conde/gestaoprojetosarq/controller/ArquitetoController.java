@@ -42,4 +42,11 @@ public class ArquitetoController {
         ArquitetoDTO arquitetoAtualizado = arquitetoService.atualizarArquiteto(id, dto);
         return ResponseEntity.ok(arquitetoAtualizado);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletarArquiteto(@PathVariable Long id){
+        arquitetoService.deletarArquiteto(id);
+        String mensagem = "Arquiteto deletado com sucesso";
+        return ResponseEntity.ok(mensagem);
+    }
 }

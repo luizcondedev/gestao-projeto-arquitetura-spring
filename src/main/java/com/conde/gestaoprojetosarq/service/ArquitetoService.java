@@ -123,6 +123,20 @@ public class ArquitetoService {
         return converterParaDto(arquitetoExistente);
     }
 
+    public void deletarArquiteto(Long id){
+        Arquiteto arquiteto = arquitetoRepository.findById(id)
+                .orElseThrow(() -> new ConflictException("Arquiteto não encontrado"));
+
+        List<Projeto> projetos = projetoRepository.findByArquitetoCpf(arquiteto.getCpf());
+
+        if(!projetos.isEmpty()){
+            throw new ConflictException("O arquiteto tem " + projetos.size()+ " projetos associados!");
+        }
+
+        System.out.println();
+        arquitetoRepository.delete(arquiteto);
+    }
+
     public boolean verificaEmailExistente(String email) {
         return arquitetoRepository.existsByEmail(email);
     }
