@@ -26,7 +26,7 @@ public class ProjetoController {
         return ResponseEntity.ok(projetoService.listarTodos());
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProjetoDTO> atualizarProjeto(
             @PathVariable Long id,
             @RequestBody ProjetoUpdateDTO dto) {
@@ -35,7 +35,7 @@ public class ProjetoController {
         return ResponseEntity.ok(projetoAtualizado);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarProjeto (@PathVariable Long id){
         projetoService.deletarProjeto(id);
         String mensagem = "Projeto deletado com sucesso!!";
