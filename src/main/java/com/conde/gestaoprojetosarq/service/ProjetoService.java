@@ -31,7 +31,7 @@ public class ProjetoService {
 
         if (projeto.getArquiteto() != null && projeto.getArquiteto().getId() != null) {
             Arquiteto arquiteto = arquitetoRepository.findById(projeto.getArquiteto().getId())
-                    .orElseThrow(() -> new RuntimeException("Arquiteto não encontrado pelo ID"));
+                    .orElseThrow(() -> new ConflictException("Arquiteto não encontrado pelo ID"));
             projeto.setArquiteto(arquiteto);
         } else {
             throw new RuntimeException("É obrigatório informar o ID do Arquiteto");
@@ -39,7 +39,7 @@ public class ProjetoService {
 
         if (projeto.getCliente() != null && projeto.getCliente().getId() != null) {
             Cliente cliente = clienteRepository.findById(projeto.getCliente().getId())
-                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado pelo ID"));
+                    .orElseThrow(() -> new ConflictException("Cliente não encontrado pelo ID"));
             projeto.setCliente(cliente);
         } else {
             throw new RuntimeException("É obrigatório informar o ID do Cliente");
