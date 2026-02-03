@@ -142,7 +142,7 @@ Antes de começar, certifique-se de ter instalado:
 
 ### 1️⃣ Clone o repositório
 ```bash
-git clone https://github.com/luizcondedev/gestao-projeto-arquitetura-spring
+git clone https://github.com/luizcondedev/gestao-projeto-arquitetura-spring.git
 cd gestao-projeto-arquitetura-spring
 ```
 
