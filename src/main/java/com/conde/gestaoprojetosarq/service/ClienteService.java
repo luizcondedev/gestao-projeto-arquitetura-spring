@@ -42,13 +42,7 @@ public class ClienteService {
         Cliente cliente = clienteRepository.findByCpf(cpf)
                 .orElseThrow(() -> new ConflictException("Cliente não encontrado com esse cpf: " + cpf));
 
-        ClienteDTO dto = new ClienteDTO();
-        dto.setNome(cliente.getNome());
-        dto.setEmail(cliente.getEmail());
-        dto.setCpf(cliente.getCpf());
-        dto.setTelefoneContato(cliente.getTelefoneContato());
-
-        return dto;
+        return clienteConverter.paraDTO(cliente);
     }
 
     public List<ProjetoDTO> buscarProjetosPorCpfDoCliente(String cpf) {
@@ -57,30 +51,13 @@ public class ClienteService {
             throw new ConflictException("Nenhum Projeto encontrado associado a esse Cliente");
         }
 
-        return projetos.stream()
-                .map(projeto -> {
-                    ProjetoDTO dto = new ProjetoDTO();
-                    dto.setNomeProjeto(projeto.getNomeProjeto());
-                    dto.setEnderecoProjeto(projeto.getEnderecoProjeto());
-                    dto.setFaseProjeto(projeto.getFaseProjeto());
-                    dto.setOrcamento(projeto.getOrcamento());
-                    dto.setNomeArquiteto(projeto.getArquiteto().getNome());
-                    dto.setNomeCliente(projeto.getCliente().getNome());
-                    return dto;
-                }).toList();
+        return clienteConverter.paraListaProjetoDTO(projetos);
     }
 
     public List<ClienteDTO> listarTodos() {
         List<Cliente> clientes = clienteRepository.findAll();
-        return clientes.stream()
-                .map(cliente -> {
-                    ClienteDTO dto = new ClienteDTO();
-                    dto.setNome(cliente.getNome());
-                    dto.setEmail(cliente.getEmail());
-                    dto.setCpf(cliente.getCpf());
-                    dto.setTelefoneContato(cliente.getTelefoneContato());
-                    return dto;
-                }).toList();
+        return clienteConverter.paraListaClienteDTO(clientes);
+
     }
 
     public ClienteDTO atualizarCliente(Long id, ClienteDTO dto) {
@@ -113,8 +90,7 @@ public class ClienteService {
 
         Cliente clienteAtualizado = clienteRepository.save(clienteExistente);
 
-        return converterParaDTO(clienteAtualizado);
-
+        return clienteConverter.paraDTO(clienteAtualizado);
     }
 
     public int deletarCliente(Long id){
