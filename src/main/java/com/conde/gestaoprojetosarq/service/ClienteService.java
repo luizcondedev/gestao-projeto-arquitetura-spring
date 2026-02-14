@@ -64,35 +64,46 @@ public class ClienteService {
 
     public ClienteDTO atualizarCliente(Long id, ClienteDTO dto) {
         Cliente clienteExistente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ConflictException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
-        if (dto.getNome() != null) {
-            clienteExistente.setNome(dto.getNome());
-        }
-
-        if(dto.getEmail() != null && !dto.getEmail().equals(clienteExistente.getEmail())){
-            if(verificaEmailExistente(dto.getEmail())){
-                throw new ConflictException("Email já cadastrado em outro cliente: " + dto.getEmail());
-            }
-
-            clienteExistente.setEmail(dto.getEmail());
-        }
-
-        if(dto.getCpf() != null && !dto.getCpf().equals(clienteExistente.getCpf())){
-            if(verificaCpfExistente(dto.getCpf())){
-                throw new ConflictException("CPF já cadastrado em outro cliente: " + dto.getCpf());
-            }
-
-            clienteExistente.setCpf(dto.getCpf());
-        }
-
-        if(dto.getTelefoneContato() != null){
-            clienteExistente.setTelefoneContato(dto.getTelefoneContato());
-        }
+        atualizarCampos(clienteExistente, dto);
 
         Cliente clienteAtualizado = clienteRepository.save(clienteExistente);
 
         return clienteConverter.paraDTO(clienteAtualizado);
+    }
+
+    public void atualizarCampos(Cliente cliente, ClienteDTO dto){
+        atualizarNome(cliente, dto);
+        atualizarEmail(cliente, dto);
+        atualizarCpf(cliente, dto);
+        atualizarTelefoneContato(cliente, dto);
+    }
+
+    public void atualizarNome(Cliente cliente, ClienteDTO dto){
+        if(dto.getNome() != null){
+            cliente.setNome(dto.getNome());
+        }
+    }
+
+    public void atualizarEmail(Cliente cliente, ClienteDTO dto){
+        if(dto.getEmail() != null && !dto.getEmail().equals(cliente.getEmail())){
+            verificaEmailExistente(dto.getEmail());
+            cliente.setEmail(dto.getEmail());
+        }
+    }
+
+    public void atualizarCpf(Cliente cliente, ClienteDTO dto){
+        if(dto.getCpf() != null && !dto.getCpf().equals(cliente.getCpf())){
+            verificaCpfExistente(dto.getCpf());
+            cliente.setCpf(dto.getCpf());
+        }
+    }
+
+    public void atualizarTelefoneContato(Cliente cliente, ClienteDTO dto){
+        if(dto.getTelefoneContato() != null && !dto.getTelefoneContato().equals(cliente.getTelefoneContato())){
+            cliente.setTelefoneContato(dto.getTelefoneContato());
+        }
     }
 
     public int deletarCliente(Long id){
