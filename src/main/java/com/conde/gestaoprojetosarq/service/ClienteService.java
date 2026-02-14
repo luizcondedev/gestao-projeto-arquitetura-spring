@@ -22,10 +22,10 @@ public class ClienteService {
     private final ProjetoRepository projetoRepository;
     private final ClienteConverter clienteConverter;
 
-    public Cliente salvarCliente(Cliente cliente) {
+    public ClienteDTO salvarCliente(Cliente cliente) {
         emailExiste(cliente.getEmail());
         cpfExiste(cliente.getCpf());
-        return clienteRepository.save(cliente);
+        return clienteConverter.paraDTO(clienteRepository.save(cliente));
     }
 
     public void emailExiste(String email) {
