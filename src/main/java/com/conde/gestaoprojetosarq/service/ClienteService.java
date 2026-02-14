@@ -18,8 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteService {
 
-    @Autowired
-    private ProjetoRepository projetoRepository;
     private final ClienteRepository clienteRepository;
     private final ProjetoRepository projetoRepository;
     private final ClienteConverter clienteConverter;
