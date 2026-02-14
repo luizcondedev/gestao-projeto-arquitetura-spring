@@ -4,22 +4,25 @@ import com.conde.gestaoprojetosarq.infrastructure.exceptions.ConflictException;
 import com.conde.gestaoprojetosarq.infrastructure.exceptions.ResourceNotFoundException;
 import com.conde.gestaoprojetosarq.model.Cliente;
 import com.conde.gestaoprojetosarq.model.Projeto;
+import com.conde.gestaoprojetosarq.model.converters.ClienteConverter;
 import com.conde.gestaoprojetosarq.model.dto.ClienteDTO;
 import com.conde.gestaoprojetosarq.model.dto.ProjetoDTO;
 import com.conde.gestaoprojetosarq.repository.ClienteRepository;
 import com.conde.gestaoprojetosarq.repository.ProjetoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
-    @Autowired
-    private ClienteRepository clienteRepository;
 
     @Autowired
     private ProjetoRepository projetoRepository;
+    private final ClienteRepository clienteRepository;
+    private final ProjetoRepository projetoRepository;
+    private final ClienteConverter clienteConverter;
 
     public Cliente salvarCliente(Cliente cliente) {
         emailExiste(cliente.getEmail());
@@ -120,14 +123,5 @@ public class ClienteService {
 
     public boolean verificaCpfExistente(String cpf) {
         return clienteRepository.existsByCpf(cpf);
-    }
-
-    private ClienteDTO converterParaDTO(Cliente cliente){
-        ClienteDTO dto = new ClienteDTO();
-        dto.setNome(cliente.getNome());
-        dto.setEmail(cliente.getEmail());
-        dto.setCpf(cliente.getCpf());
-        dto.setTelefoneContato(cliente.getTelefoneContato());
-        return dto;
     }
 }
