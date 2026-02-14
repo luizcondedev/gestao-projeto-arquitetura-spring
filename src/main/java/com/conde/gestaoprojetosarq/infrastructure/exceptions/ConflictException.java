@@ -5,6 +5,10 @@ public class ConflictException extends RuntimeException{
         super(mensagem);
     }
 
+    public ConflictException(Throwable throwable){
+        super(throwable);
+    }
+
     public ConflictException(String mensagem, Throwable throwable){
         super(mensagem);
     }
