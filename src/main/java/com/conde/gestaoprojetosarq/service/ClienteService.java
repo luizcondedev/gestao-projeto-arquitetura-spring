@@ -1,6 +1,7 @@
 package com.conde.gestaoprojetosarq.service;
 
 import com.conde.gestaoprojetosarq.infrastructure.exceptions.ConflictException;
+import com.conde.gestaoprojetosarq.infrastructure.exceptions.ResourceNotFoundException;
 import com.conde.gestaoprojetosarq.model.Cliente;
 import com.conde.gestaoprojetosarq.model.Projeto;
 import com.conde.gestaoprojetosarq.model.dto.ClienteDTO;
@@ -40,7 +41,7 @@ public class ClienteService {
 
     public ClienteDTO buscarClientePorCpf(String cpf) {
         Cliente cliente = clienteRepository.findByCpf(cpf)
-                .orElseThrow(() -> new ConflictException("Cliente não encontrado com esse cpf: " + cpf));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com esse cpf: " + cpf));
 
         return clienteConverter.paraDTO(cliente);
     }
@@ -48,7 +49,7 @@ public class ClienteService {
     public List<ProjetoDTO> buscarProjetosPorCpfDoCliente(String cpf) {
         List<Projeto> projetos = projetoRepository.findByClienteCpf(cpf);
         if (projetos.isEmpty()) {
-            throw new ConflictException("Nenhum Projeto encontrado associado a esse Cliente");
+            throw new ResourceNotFoundException("Nenhum Projeto encontrado associado a esse Cliente");
         }
 
         return clienteConverter.paraListaProjetoDTO(projetos);
@@ -95,7 +96,7 @@ public class ClienteService {
 
     public int deletarCliente(Long id){
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ConflictException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         List<Projeto> projetos = projetoRepository.findByClienteCpf(cliente.getCpf());
         int quantidadeProjetos = projetos.size();
