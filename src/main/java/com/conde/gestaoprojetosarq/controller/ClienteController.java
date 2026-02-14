@@ -21,7 +21,7 @@ public class ClienteController {
         return ResponseEntity.status(201).body(clienteService.salvarCliente(cliente));
     }
 
-    @GetMapping("/buscar")
+    @GetMapping()
     public ResponseEntity<List<ClienteDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
